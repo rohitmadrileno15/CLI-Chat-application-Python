@@ -1,6 +1,7 @@
 import socket
 import threading
 import sys
+from datetime import datetime
 from time import sleep
 
 result = ("Encrypted Chat Application"  )
@@ -34,7 +35,7 @@ def handle_client(conn,addr):
 
     print("NEW USER-->", addr , "connected")
     with open("logs.txt", "a") as f:
-         f.write("New User Connected \n")
+         f.write( datetime.date.today()+ ": " + "New User Connected \n")
     connected = True
     while connected:
 
@@ -47,7 +48,7 @@ def handle_client(conn,addr):
                 connected = False
                 print("One User has disconnected")
                 with open("logs.txt", "a") as f:
-                     f.write("User disconnected \n")
+                     f.write(datetime.date.today()+ ": "+"User disconnected \n")
             print(msg)
             msg_list.append(msg)
 
@@ -69,7 +70,7 @@ def start ():
     print()
     print("looking for msgs")
     with open("logs.txt", "a") as f:
-         f.write("Looking for new msgs \n \n")
+         f.write(datetime.date.today()+ ": "+"Looking for new msgs \n \n")
     while (True):
 
         try:
@@ -80,21 +81,21 @@ def start ():
 
             print("ACTIVE CONNECTIONS - ", connection_number)
             with open("logs.txt", "a") as f:
-                 f.write("ActiveUsers" + str(connection_number) +"\n")
+                 f.write(datetime.date.today()+ ": "+"ActiveUsers" + str(connection_number) +"\n")
             if(connection_number>21):
                 print("User limit exceeded")
                 time.sleep(3)
                 server.close()
                 print("Connection closed")
                 with open("logs.txt", "a") as f:
-                     f.write("Encountered Error!\n")
+                     f.write(datetime.date.today()+ ": "+"Encountered Error!\n")
 
                 sys.exit()
 
 
         except Exception as e:
             with open("logs.txt", "a") as f:
-                 f.write("Encountered Error! as" + str(e)+ "\n")
+                 f.write(datetime.date.today()+ ": "+"Encountered Error! as" + str(e)+ "\n")
 
 
 
