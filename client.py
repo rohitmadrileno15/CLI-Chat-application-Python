@@ -1,6 +1,7 @@
 import socket
 import pyfiglet
 import pycrypt
+from time import sleep
 import random
 result = pyfiglet.figlet_format("Encrypted Chat", font = "slant"  )
 print(result)
@@ -44,33 +45,35 @@ connection_condition = True
 
 while(connection_condition):
 
-    try:
-        msg_to_server = str(input("enter msg \n"))
-        msg_to_server = msg_to_server.strip()
+
+    msg_to_server = str(input("enter msg \n"))
+    msg_to_server = msg_to_server.strip()
+    if(len(msg_to_server)==0):
+        print("Enter any value")
+        continue
 
 
-        order = ['exit', 'Exit', 'EXIT']
+    order = ['exit', 'Exit', 'EXIT']
 
-        if(msg_to_server in order):
-            send(DICONNECT_MSG)
-            connection_condition = False
+    if(msg_to_server in order):
+        send(DICONNECT_MSG)
+        print("You will now exit from the chat!")
+        time.sleep(2)
+        break
 
-        rand_val =  15
+    rand_val =  15
 
-        msg_to_server = usr_name + " :- " + msg_to_server
-        for i in range(rand_val):
-            msg_to_server = pycrypt.caesar.encrypt(msg_to_server, 5)
+    msg_to_server = usr_name + " :- " + msg_to_server
+    for i in range(rand_val):
+        msg_to_server = pycrypt.caesar.encrypt(msg_to_server, 5)
 
-        send(msg_to_server)
-        print("-------message sent---------")
-        print()
-        client.send("PING".encode(FORMAT))
+    send(msg_to_server)
+    print("-------message sent---------")
+    print()
+    client.send("PING".encode(FORMAT))
 
-        data = client.recv(1024).decode(FORMAT)
-        for i in range(rand_val):
-            data = pycrypt.caesar.decrypt(data, 5)
-        print(data)
-        print("-------------------")
-
-    except Exception as e:
-        print("Error")
+    data = client.recv(1024).decode(FORMAT)
+    for i in range(rand_val):
+        data = pycrypt.caesar.decrypt(data, 5)
+    print(data)
+    print("-------------------")

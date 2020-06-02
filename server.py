@@ -1,6 +1,6 @@
 import socket
 import threading
-
+import sys
 from time import sleep
 
 result = ("Encrypted Chat Application"  )
@@ -33,6 +33,8 @@ def handle_client(conn,addr):
 
 
     print("NEW USER-->", addr , "connected")
+    with open("logs.txt", "a") as f:
+         f.write("New User Connected \n")
     connected = True
     while connected:
 
@@ -44,6 +46,8 @@ def handle_client(conn,addr):
             if (msg == DICONNECT_MSG):
                 connected = False
                 print("One User has disconnected")
+                with open("logs.txt", "a") as f:
+                     f.write("User disconnected \n")
             print(msg)
             msg_list.append(msg)
 
@@ -64,24 +68,34 @@ def start ():
     server.listen()
     print()
     print("looking for msgs")
+    with open("logs.txt", "a") as f:
+         f.write("Looking for new msgs \n \n")
     while (True):
-        conn , addr = server.accept()
-        thread = threading.Thread(target=handle_client, args =(conn,addr))
-        thread.start()
-        try:
 
+        try:
+            conn , addr = server.accept()
+            thread = threading.Thread(target=handle_client, args =(conn,addr))
+            thread.start()
             connection_number = (threading.activeCount() -1)
-            print("ACTIVE CONNECTIONS", connection_number)
+
+            print("ACTIVE CONNECTIONS - ", connection_number)
+            with open("logs.txt", "a") as f:
+                 f.write("ActiveUsers" + str(connection_number) +"\n")
             if(connection_number>21):
                 print("User limit exceeded")
                 time.sleep(3)
+                server.close()
+                print("Connection closed")
+                with open("logs.txt", "a") as f:
+                     f.write("Encountered Error!\n")
+
                 sys.exit()
 
-        except Exception as e:
-            print("Its Fine, just a glitch")
 
-        finally:
-            print("Encountered Error!")
+        except Exception as e:
+            with open("logs.txt", "a") as f:
+                 f.write("Encountered Error! as" + str(e)+ "\n")
+
 
 
 
