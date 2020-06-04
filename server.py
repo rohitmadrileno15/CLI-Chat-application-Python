@@ -3,7 +3,7 @@ import threading
 import sys
 from time import sleep
 
-result = ("Encrypted Chat Application"  )
+result = ("*** Encrypted Chat Application ***")
 
 print(result)
 
@@ -48,17 +48,19 @@ def handle_client(conn,addr):
                 print("One User has disconnected")
                 with open("logs.txt", "a") as f:
                      f.write("User disconnected \n")
+
             print(msg)
             msg_list.append(msg)
 
             print(msg_list)
             r="\n".join(msg_list)
             data__ = conn.recv(1024).decode(FORMAT)
+
             if(data__ == "PING"):
                 conn.send(r.encode(FORMAT))
 
 
-            # conn.send("Msg sent".encode(FORMAT))
+
 
     conn.close()
 
@@ -73,9 +75,11 @@ def start ():
     while (True):
 
         try:
+
             conn , addr = server.accept()
             thread = threading.Thread(target=handle_client, args =(conn,addr))
             thread.start()
+
             connection_number = (threading.activeCount() -1)
 
             print("ACTIVE CONNECTIONS - ", connection_number)

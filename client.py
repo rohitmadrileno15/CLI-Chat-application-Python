@@ -1,7 +1,7 @@
 import socket
 import pyfiglet
-import pycrypt
-from time import sleep
+
+import time
 import random
 result = pyfiglet.figlet_format("Encrypted Chat", font = "slant"  )
 print(result)
@@ -36,7 +36,7 @@ def send(msg):
     send_len += b' ' * (HEADER - len(send_len))
     client.send(send_len)
     client.send(message)
-    # print(client.recv(2048).decode(FORMAT))
+
 
 print("if you want to exit, type in 'exit' ")
 
@@ -44,7 +44,6 @@ print("<----------->")
 connection_condition = True
 
 while(connection_condition):
-
 
     msg_to_server = str(input("enter msg \n"))
     msg_to_server = msg_to_server.strip()
@@ -64,8 +63,6 @@ while(connection_condition):
     rand_val =  15
 
     msg_to_server = usr_name + " :- " + msg_to_server
-    for i in range(rand_val):
-        msg_to_server = pycrypt.caesar.encrypt(msg_to_server, 5)
 
     send(msg_to_server)
     print("-------message sent---------")
@@ -73,7 +70,6 @@ while(connection_condition):
     client.send("PING".encode(FORMAT))
 
     data = client.recv(1024).decode(FORMAT)
-    for i in range(rand_val):
-        data = pycrypt.caesar.decrypt(data, 5)
+
     print(data)
     print("-------------------")
